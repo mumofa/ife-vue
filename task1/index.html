@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task1</title>
+</head>
+<body>
+<script>
+    function Observer(data) {
+        this.data = data;
+        this.walk(data);
+    }
+
+    let p = Observer.prototype;
+
+    p.walk = function(data) {
+        let val;
+        for(let key in data) {
+            //for in出来的属性 会自带原型链上的属性 所以要继续用hasOwnProperty判断是否自身属性
+            if( data.hasOwnProperty(key) ) {
+                val = data[key];
+
+                if(typeof val == "object") {
+                    new Observer(val);
+                }
+
+                this.convert(key,val);
+            }
+        }
+    };
+
+    p.convert = function(key,val) {
+        Object.defineProperty(this.data,key,{
+            enumerable : true,
+            configurable : true,
+            get : function() {
+                console.log("你访问了"+key);
+                return val;
+            },
+            set : function(newval) {
+                console.log("你设置了"+key);
+                console.log("新的"+key+"值为"+newval);
+                if(newval == val) return;
+                val = newval;
+            }
+        });
+    };
+
+    let app1 = new Observer({
+        name: 'youngwind',
+        age: 25
+    });
+
+    let app2 = new Observer({
+        university: 'bupt',
+        major: 'computer'
+    });
+
+    // 要实现的结果如下：
+    app1.data.name; // 你访问了 name
+    app1.data.age = 100;  // 你设置了 age，新的值为100
+    app2.data.university; // 你访问了 university
+    app2.data.major = 'science';  // 你设置了 major，新的值为 science
+</script>
+</body>
+</html>
