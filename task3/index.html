@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task3</title>
+</head>
+<body>
+<script src="observer.js"></script>
+<script>
+    let app1 = new Observer({
+        name : {
+            firstName : "h",
+            lastName : "jj"
+        },
+        address : "gz"
+    });
+
+    app1.$watch("name",function() {
+        console.log("姓名改变啦！")
+    });
+
+    app1.data.name.firstName = "H";
+
+</script>
+</body>
+</html>
