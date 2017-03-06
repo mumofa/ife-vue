@@ -1,7 +1,7 @@
 class Observer {
-    constructor(data,parent) {
+    constructor(data) {
         this.data = data;
-        this.makeObserver(data,parent);
+        this.makeObserver(data);
         this.events = {};
 
     }
@@ -14,22 +14,16 @@ class Observer {
                 val = data[key];
 
                 let path = "";
-                if(!paths) {
+                if(!paths) { //没有paths说明是根部，路径直接等于key
                     path = key;
                 } else {
                     path = paths + key;
                 }
-                //if (!path) path = key;
-                //else path = path + key;
 
                 if(typeof val == "object") {
-                    //new Observer(val,parent);
-                    if(path) {
-                        path += ".";
-                    }
-                    this.makeObserver(val,path);
+                    //加上 '.' 为子类路径做准备
+                    this.makeObserver(val,path+".");
                 }
-
                 this.setProperty(data,key,val,path);
             }
         }
@@ -49,9 +43,10 @@ class Observer {
                 val = newval;
 
                 //触发 $watch 订阅
-                _this.$notify(paths);
+                _this.emit(paths);
 
                 if(typeof newval == "object") {
+                    //加上 '.' 为子类路径做准备
                     if(paths) {
                         paths = paths+".";
                     }
@@ -70,8 +65,8 @@ class Observer {
         this.events[key].push(callback);
     }
 
-    //给深层属性往父级注册事件
-    $notify(path) {
+    //根据路径发布通知
+    emit(path) {
         let keys = path.split(".");
         //可返回父级数组
         /*
@@ -79,11 +74,13 @@ class Observer {
         * return ["a", "a.b", "a.b.c"]
         * */
         let depPaths = keys.map((key, index) => {
-            if (index == 0) return key
+            if (index == 0) {
+                return key;
+            }
             else {
                 let str = '';
-                while (index--) str = keys[index] + '.' + str
-                return str + key
+                while (index--) str = keys[index] + '.' + str;
+                return str + key;
             }
         });
 
