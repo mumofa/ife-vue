@@ -5,91 +5,10 @@
     <title>Task2</title>
 </head>
 <body>
+<script src="observer.js"></script>
 <script>
 
-    //订阅 发布
-    function event() {
-        this.eventArr = {};
-    }
-
-    event.prototype = {
-        on : function(key,callback) {
-            let _this = this;
-            if(_this.eventArr[key]) {
-                this.eventArr[key].push(callback);
-            } else {
-                this.eventArr[key] = [callback];
-            }
-        },
-        off : function(attr) {
-            let _this = this;
-            for(let key in _this.eventArr) {
-                if(_this.eventArr.hasOwnProperty(key) && key == attr) {
-                    delete _this.eventArr[key];
-                }
-            }
-        },
-        emit : function(key , ...arg) {
-            let _this = this;
-//            var argHandle = Array.prototype.slice.call(arguments,1);
-            if(_this.eventArr[key]) {
-                _this.eventArr[key].forEach(function(item) {
-                    item(...arg);
-                });
-            }
-        }
-    };
-
-    //观察者
-    function Observer(data) {
-        this.data = data;
-        this.makeObserver(data);
-        this.events = new event();
-    }
-
-    Observer.prototype = {
-        makeObserver : function(data) {
-            let val;
-            for(let key in data) {
-                //for in出来的属性 会自带原型链上的属性 所以要继续用hasOwnProperty判断是否自身属性
-                if( data.hasOwnProperty(key) ) {
-                    val = data[key];
-
-                    if(typeof val == "object") {
-                        new Observer(val);
-                    }
-
-                    this.setProperty(key,val);
-                }
-            }
-        },
-        setProperty : function(key,val) {
-            let _this = this;
-            Object.defineProperty(this.data,key,{
-                enumerable : true,
-                configurable : true,
-                get : function() {
-                    console.log(`你访问了${key}`);
-                    return val;
-                },
-                set : function(newval) {
-                    console.log(`你设置了${key},新的${key}值为${newval}`);
-                    if(newval == val) return;
-                    //触发 $watch 订阅
-                    _this.events.emit(key,val,newval);
-                    val = newval;
-                    if(typeof newval == "object") {
-                        new Observer(newval);
-                    }
-                }
-            });
-        },
-        $watch : function(key,callback) {
-            this.events.on(key,callback);
-        }
-    };
-
-    /*let app1 = new Observer({
+    let app1 = new Observer({
         name: 'youngwind',
         age: 25
     });
@@ -102,16 +21,10 @@
     app1.data.name.lastName;
     // 这里还需要输出 '你访问了 lastName '
     app1.data.name.firstName = 'lalala';
-    // 这里还需要输出 '你设置了firstName, 新的值为 lalala'*/
-
-
-    let app1 = new Observer({
-        name: 'youngwind',
-        age: 25
-    });
+    // 这里还需要输出 '你设置了firstName, 新的值为 lalala'
 
     // 你需要实现 $watch 这个 API
-    app1.$watch('age', function(old,newVal) {
+    app1.$watch('age', function(newVal) {
         console.log(`我的年纪变了，现在已经是：${newVal}岁了`)
     });
 

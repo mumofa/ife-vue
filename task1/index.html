@@ -5,47 +5,8 @@
     <title>Task1</title>
 </head>
 <body>
+<script src="observer.js"></script>
 <script>
-    function Observer(data) {
-        this.data = data;
-        this.walk(data);
-    }
-
-    let p = Observer.prototype;
-
-    p.walk = function(data) {
-        let val;
-        for(let key in data) {
-            //for in出来的属性 会自带原型链上的属性 所以要继续用hasOwnProperty判断是否自身属性
-            if( data.hasOwnProperty(key) ) {
-                val = data[key];
-
-                if(typeof val == "object") {
-                    new Observer(val);
-                }
-
-                this.convert(key,val);
-            }
-        }
-    };
-
-    p.convert = function(key,val) {
-        Object.defineProperty(this.data,key,{
-            enumerable : true,
-            configurable : true,
-            get : function() {
-                console.log("你访问了"+key);
-                return val;
-            },
-            set : function(newval) {
-                console.log("你设置了"+key);
-                console.log("新的"+key+"值为"+newval);
-                if(newval == val) return;
-                val = newval;
-            }
-        });
-    };
-
     let app1 = new Observer({
         name: 'youngwind',
         age: 25
