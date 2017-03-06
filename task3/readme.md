@@ -125,4 +125,5 @@
         return val;
     }
 
-[完整代码地址](https://github.com/mumofa/ife-vue/blob/master/task3/observer.js)
+1. [完整代码地址](https://github.com/mumofa/ife-vue/blob/master/task3/observer.js)
+2. [预览地址](https://mumofa.github.io/ife-vue/task3/index.html)
