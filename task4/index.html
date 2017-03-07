@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task4</title>
+</head>
+<body>
+<div id="app">
+    <p>{{name.firstName}}</p>
+    <p>{{name.lastName}}</p>
+</div>
+<script src="vue.js"></script>
+<script>
+    let app = new Vue({
+        el : "#app",
+        data : {
+            name : {
+                firstName : "h",
+                lastName : "jj"
+            },
+            address : "gz"
+        }
+    });
+
+</script>
+</body>
+</html>

@@ -15,8 +15,12 @@
         address : "gz"
     });
 
-    app1.$watch("name",function() {
-        console.log("姓名改变啦！")
+//    app1.$watch("name",function() {
+//        console.log("姓名改变啦！")
+//    });
+
+    app1.$watch("name.firstName",function() {
+        console.log("firstName改变啦！")
     });
 
     app1.data.name.firstName = "H";

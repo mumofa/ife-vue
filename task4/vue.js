@@ -1,9 +1,17 @@
-class Observer {
-    constructor(data) {
-        this.data = data;
-        this.makeObserver(data);
+class Vue {
+    constructor(option) {
+        this.data = option.data;
+        this.makeObserver(option.data);
         this.events = {};
+        this.dom = document.querySelector(option.el);
+    }
 
+    renderView() {
+        let htmlString = this.dom.innerHTML;
+        let viewArr = htmlString.match(/\{\{(.)\}\}/g);
+        viewArr.forEach((item,index) => {
+
+        })
     }
 
     makeObserver(data,paths) {
@@ -68,8 +76,8 @@ class Observer {
     //根据路径发布通知
     emit(path) {
         let keys = path.split(".");
+        //可返回父级数组
         /*
-        * 可返回父级数组
         * param path = "a.b.c"
         * return ["a", "a.b", "a.b.c"]
         * */
@@ -94,17 +102,10 @@ class Observer {
         });
     }
 
-    /*
-     * 可返回 a.b 路径的值
-     * param path = "a.b.c"
-     * return obj[a][b][c]的Val
-     * */
     $getValue(path) {
-        //将 X.X.X 拆分成数组
         path = path.split(".");
         let val = this.data;
         path.forEach(key => {
-            //不断递归深入对象
             val = val[key];
         });
         return val;
