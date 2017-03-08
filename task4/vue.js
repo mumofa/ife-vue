@@ -4,14 +4,44 @@ class Vue {
         this.makeObserver(option.data);
         this.events = {};
         this.dom = document.querySelector(option.el);
+        //this.renderView();
+        this.findAllNode(this.dom);
     }
 
+    //这种貌似速度会快一点 但无法获取节点
     renderView() {
+        console.time("redner");
         let htmlString = this.dom.innerHTML;
-        let viewArr = htmlString.match(/\{\{(.)\}\}/g);
+        let viewArr = htmlString.match(/{{(.*?)}}/g);
         viewArr.forEach((item,index) => {
+            let viewData = item.replace(/(\{)|(\})/g,"");
+            let val = this.$getValue(viewData);
+            htmlString = htmlString.replace(item,val);
+        });
+        this.dom.innerHTML = htmlString;
+        console.timeEnd("redner");
+    }
 
-        })
+    //这种貌似速度会慢很多 但可以构造节点树 下一步可以直接定位修改值
+    findAllNode(node) {
+        console.time("nodeRedner");
+        node.children.forEach((item,index) => {
+            if (item.children.length) {
+                this.findAllNode(item);
+            } else {
+                this.compile(item);
+            }
+        });
+        console.timeEnd("nodeRedner");
+    }
+
+    compile(node) {
+        let viewArr = node.innerText.match(/{{(.*?)}}/g);
+        viewArr.forEach((item,index) => {
+            let viewData = item.replace(/(\{)|(\})/g,"");
+            let val = this.$getValue(viewData);
+            node.innerText = node.innerText.replace(item,val);
+        });
     }
 
     makeObserver(data,paths) {
