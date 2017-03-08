@@ -25,13 +25,14 @@ class Vue {
     //这种貌似速度会慢很多 但可以构造节点树 下一步可以直接定位修改值
     findAllNode(node) {
         console.time("nodeRedner");
-        node.children.forEach((item,index) => {
+        for(let i=0;i<node.children.length;i++) {
+            let item = node.children[i];
             if (item.children.length) {
                 this.findAllNode(item);
             } else {
                 this.compile(item);
             }
-        });
+        }
         console.timeEnd("nodeRedner");
     }
 

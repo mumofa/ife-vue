@@ -50,13 +50,14 @@
 
     findAllNode(node) {
         console.time("nodeRedner");
-        node.children.forEach((item,index) => {
+        for(let i=0;i<node.children.length;i++) {
+            let item = node.children[i];
             if (item.children.length) {
                 this.findAllNode(item);
             } else {
                 this.compile(item);
             }
-        });
+        }
         console.timeEnd("nodeRedner");
     }
 
