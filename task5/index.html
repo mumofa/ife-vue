@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task5</title>
+</head>
+<body>
+<div id="app">
+    <div><span>firstName:</span>{{name.firstName}}</div>
+    <div><span>lastName:</span>{{name.lastName}}</div>
+    <div><span>address:</span>{{address}}</div>
+
+    <button id="changefirstName">改变姓</button>
+    <button id="changelastName">改变名</button>
+    <button id="changeAddress">改变地址</button>
+    <button id="changeAge">改变年龄</button>
+    <button id="set">重置</button>
+</div>
+<script src="vue.js"></script>
+<script src="compile.js"></script>
+<script src="watcher.js"></script>
+<script src="evnet.js"></script>
+<script>
+    let app = new Vue({
+        el : "#app",
+        data : {
+            name : {
+                firstName : "h",
+                lastName : "jj"
+            },
+            address : "gz",
+            age : 23
+        }
+    });
+
+    app.$watch("address",function(newVal,oldVal) {
+        console.log(`address改变了，由${oldVal}变为${newVal}`);
+    });
+
+    document.getElementById("changefirstName").onclick=function(){
+        app.data.name.firstName="huang";
+    }
+    document.getElementById("changelastName").onclick=function(){
+        app.data.name.lastName="jiajian";
+    }
+    document.getElementById("changeAddress").onclick=function(){
+        app.data.address="shunde";
+    }
+    document.getElementById("changeAge").onclick=function(){
+        app.data.age=99;
+    }
+    document.getElementById("set").onclick=function(){
+        app.data.name.firstName="h";
+        app.data.name.lastName="jj";
+        app.data.address="gz";
+    }
+
+</script>
+</body>
+</html>
