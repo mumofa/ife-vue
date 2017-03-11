@@ -29,6 +29,7 @@
 2. 实现一个指令解析器`Compile`，对每个元素节点的指令进行扫描和解析，根据指令模板替换数据，以及绑定相应的更新函数。
 3. 实现一个`Watcher`，作为连接`Observer`和`Compile`的桥梁，能够订阅并收到每个属性变动的通知，执行指令绑定的相应回调函数，从而更新视图。
 4. 一个订阅模块`Dep`。
+
 ![image](https://sfault-image.b0.upaiyun.com/132/184/132184689-57b310ea1804f_articlex)
 
 # Observer
@@ -217,5 +218,7 @@
 
     Dep.target = null;
 
-1. [完整项目地址](https://github.com/mumofa/ife-vue/blob/master/task5)
-2. [预览地址](https://mumofa.github.io/ife-vue/task5/index.html)
+1. [剖析Vue原理&实现双向绑定MVVM](https://segmentfault.com/a/1190000006599500)
+2. [vue早期源码学习系列之四：如何实现动态数据绑定](https://github.com/youngwind/blog/issues/87)
+3. [完整项目地址](https://github.com/mumofa/ife-vue/blob/master/task5)
+4. [预览地址](https://mumofa.github.io/ife-vue/task5/index.html)
